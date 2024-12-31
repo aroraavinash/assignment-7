@@ -135,10 +135,10 @@ if __name__ == '__main__':
     #scheduler = StepLR(optimizer, step_size=6, gamma=0.1)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer, 
-        mode='max', 
-        factor=0.1,
-        patience=2,
-        min_lr=1e-6
+        mode='max',
+        factor=0.5,      # Less aggressive reduction
+        patience=3,      # Wait longer before reducing
+        min_lr=1e-7     # Allow for smaller learning rates
     )
     summary(model, input_size=(1, 28, 28))
     from tqdm import tqdm
