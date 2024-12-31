@@ -77,8 +77,8 @@ if __name__ == '__main__':
 
     # Train Phase transformations
     train_transforms = transforms.Compose([
-        transforms.RandomRotation((-10.0, 10.0), fill=(1,)),
-        transforms.RandomAffine(degrees=0, translate=(0.1, 0.1), scale=(0.9, 1.1)),  # Add this
+        transforms.RandomRotation((-7.0, 7.0), fill=(1,)),
+        transforms.RandomAffine(degrees=0, translate=(0.12, 0.12), scale=(0.95, 1.05)),
         transforms.ToTensor(),
         transforms.Normalize((0.1307,), (0.3081,))
     ])
@@ -130,6 +130,7 @@ if __name__ == '__main__':
     from model import Model2
     model =  Model2().to(device)
     optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+    #optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-5)  # Add weight decay
     #scheduler = StepLR(optimizer, step_size=6, gamma=0.1)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer, 
