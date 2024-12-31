@@ -77,13 +77,11 @@ if __name__ == '__main__':
 
     # Train Phase transformations
     train_transforms = transforms.Compose([
-                                        #  transforms.Resize((28, 28)),
-                                        #  transforms.ColorJitter(brightness=0.10, contrast=0.1, saturation=0.10, hue=0.1),
-                                        transforms.RandomRotation((-7.0, 7.0), fill=(1,)),
-                                        transforms.ToTensor(),
-                                        transforms.Normalize((0.1307,), (0.3081,)) # The mean and std have to be sequences (e.g., tuples), therefore you should add a comma after the values.
-                                        # Note the difference between (0.1307) and (0.1307,)
-                                        ])
+        transforms.RandomRotation((-10.0, 10.0), fill=(1,)),
+        transforms.RandomAffine(degrees=0, translate=(0.1, 0.1), scale=(0.9, 1.1)),  # Add this
+        transforms.ToTensor(),
+        transforms.Normalize((0.1307,), (0.3081,))
+    ])
 
     # Test Phase transformations
     test_transforms = transforms.Compose([
