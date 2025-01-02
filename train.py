@@ -127,8 +127,8 @@ if __name__ == '__main__':
     use_cuda = torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
     print(device)
-    from model import Model2
-    model =  Model2().to(device)
+    from model import Model3
+    model =  Model3().to(device)
     optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
     #optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-5)  # Add weight decay
     #scheduler = StepLR(optimizer, step_size=6, gamma=0.1)

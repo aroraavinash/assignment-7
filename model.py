@@ -76,9 +76,9 @@ from torchvision import datasets, transforms
 
 import torch.nn.functional as F
 dropout_value = 0.1
-class Model2(nn.Module):
+class Model3(nn.Module):
     def __init__(self):
-        super(Model2, self).__init__()
+        super(Model3, self).__init__()
         # Input Block
         self.convblock1 = nn.Sequential(
             nn.Conv2d(in_channels=1, out_channels=8, kernel_size=(3, 3), padding=0, bias=False),
@@ -158,7 +158,6 @@ class Model2(nn.Module):
         return F.log_softmax(x, dim=-1)
 
 
-class Model3(nn.Module):
     def __init__(self):
         super(Model3, self).__init__()
         # Input Block
