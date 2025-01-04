@@ -75,6 +75,321 @@ from torchvision import datasets, transforms
 # """
 
 import torch.nn.functional as F
+
+class Model1(nn.Module):
+    def __init__(self):
+        super(Model1, self).__init__()
+        # Input Block
+        self.convblock1 = nn.Sequential(
+            nn.Conv2d(in_channels=1, out_channels=8, kernel_size=(3, 3), padding=0, bias=False),
+
+            nn.ReLU()
+        ) # output_size = 26
+
+        # CONVOLUTION BLOCK 1
+        self.convblock2 = nn.Sequential(
+            nn.Conv2d(in_channels=8, out_channels=12, kernel_size=(3, 3), padding=0, bias=False),
+
+            nn.ReLU()
+        ) # output_size = 24
+        # self.convblock3 = nn.Sequential(
+        #     nn.Conv2d(in_channels=10, out_channels=20, kernel_size=(3, 3), padding=0, bias=False),
+
+
+        #     nn.ReLU()
+        # ) # output_size = 22
+
+        # TRANSITION BLOCK 1
+        self.convblock3 = nn.Sequential(
+            nn.Conv2d(in_channels=12, out_channels=8, kernel_size=(1, 1), padding=0, bias=False),
+            nn.ReLU()
+        ) # output_size = 22
+        self.pool1 = nn.MaxPool2d(2, 2) # output_size = 11
+
+
+        # CONVOLUTION BLOCK 2
+        self.convblock4 = nn.Sequential(
+            nn.Conv2d(in_channels=8, out_channels=12, kernel_size=(3, 3), padding=0, bias=False),
+
+
+            nn.ReLU()
+        ) # output_size =9
+        self.convblock5 = nn.Sequential(
+            nn.Conv2d(in_channels=12, out_channels=12, kernel_size=(3, 3), padding=0, bias=False),
+            nn.ReLU()
+        ) # output_size = 7
+
+        # OUTPUT BLOCK
+        self.convblock6 = nn.Sequential(
+            nn.Conv2d(in_channels=12, out_channels=12, kernel_size=(3, 3), padding=0, bias=False),
+            nn.ReLU()
+        ) # output_size = 5
+        self.convblock7 = nn.Sequential(
+            nn.Conv2d(in_channels=12, out_channels=12, kernel_size=(3, 3), padding=0, bias=False),
+            # nn.BatchNorm2d(10), NEVER
+            # nn.ReLU() NEVER!
+        ) # output_size = 3
+
+    def forward(self, x):
+        x = self.convblock1(x)
+        x = self.convblock2(x)
+        x = self.convblock3(x)
+        x = self.pool1(x)
+        x = self.convblock4(x)
+        x = self.convblock5(x)
+        x = self.convblock6(x)
+        x = self.convblock7(x)
+        #x = self.convblock8(x)
+        batch_size = x.shape[0]
+        x = x.view(batch_size, -1)  # This will automatically handle the dimensions correctly 
+        return F.log_softmax(x, dim=-1)
+
+
+### Use Batch Normalization
+class Model2(nn.Module):
+    def __init__(self):
+        super(Model2, self).__init__()
+        self.model = Model2()
+        self.convblock1 = nn.Sequential(
+            nn.Conv2d(in_channels=1, out_channels=8, kernel_size=(3, 3), padding=0, bias=False),
+            nn.BatchNorm2d(8),
+            nn.ReLU()
+        ) # output_size = 26
+
+        # CONVOLUTION BLOCK 1
+        self.convblock2 = nn.Sequential(
+            nn.Conv2d(in_channels=8, out_channels=12, kernel_size=(3, 3), padding=0, bias=False),
+            nn.BatchNorm2d(12),
+            nn.ReLU()
+        ) # output_size = 24
+        # self.convblock3 = nn.Sequential(
+        #     nn.Conv2d(in_channels=10, out_channels=20, kernel_size=(3, 3), padding=0, bias=False),
+
+
+        #     nn.ReLU()
+        # ) # output_size = 22
+
+        # TRANSITION BLOCK 1
+        self.convblock3 = nn.Sequential(
+            nn.Conv2d(in_channels=12, out_channels=8, kernel_size=(1, 1), padding=0, bias=False),
+            nn.BatchNorm2d(8),
+            nn.ReLU()
+        ) # output_size = 22
+        self.pool1 = nn.MaxPool2d(2, 2) # output_size = 11
+
+
+        # CONVOLUTION BLOCK 2
+        self.convblock4 = nn.Sequential(
+            nn.Conv2d(in_channels=8, out_channels=12, kernel_size=(3, 3), padding=0, bias=False),
+            nn.BatchNorm2d(12),
+
+            nn.ReLU()
+        ) # output_size =9
+        self.convblock5 = nn.Sequential(
+            nn.Conv2d(in_channels=12, out_channels=12, kernel_size=(3, 3), padding=0, bias=False),
+            nn.BatchNorm2d(12),
+            nn.ReLU()
+        ) # output_size = 7
+
+        # OUTPUT BLOCK
+        self.convblock6 = nn.Sequential(
+            nn.Conv2d(in_channels=12, out_channels=12, kernel_size=(3, 3), padding=0, bias=False),
+            nn.BatchNorm2d(12),
+            nn.ReLU()
+        ) # output_size = 5
+        self.convblock7 = nn.Sequential(
+            nn.Conv2d(in_channels=12, out_channels=12, kernel_size=(3, 3), padding=0, bias=False),
+            nn.BatchNorm2d(12),
+            # nn.BatchNorm2d(10), NEVER
+            # nn.ReLU() NEVER!
+        ) # output_size = 3
+
+    def forward(self, x):
+        x = self.convblock1(x)
+        x = self.convblock2(x)
+        x = self.convblock3(x)
+        x = self.pool1(x)
+        x = self.convblock4(x)
+        x = self.convblock5(x)
+        x = self.convblock6(x)
+        x = self.convblock7(x)
+        #x = self.convblock8(x)
+        batch_size = x.shape[0]
+        x = x.view(batch_size, -1)  # This will automatically handle the dimensions correctly 
+        return F.log_softmax(x, dim=-1)
+
+# Add Dropout
+class Model2b(nn.Module):
+    def __init__(self):
+        super(Model2b, self).__init__()
+        # Input Block
+        self.convblock1 = nn.Sequential(
+            nn.Conv2d(in_channels=1, out_channels=8, kernel_size=(3, 3), padding=0, bias=False),
+            nn.BatchNorm2d(8),
+            nn.ReLU()
+        ) # output_size = 26
+
+        # CONVOLUTION BLOCK 1
+        self.convblock2 = nn.Sequential(
+            nn.Conv2d(in_channels=8, out_channels=12, kernel_size=(3, 3), padding=0, bias=False),
+            nn.BatchNorm2d(12),
+            nn.ReLU()
+        ) # output_size = 24
+        # self.convblock3 = nn.Sequential(
+        #     nn.Conv2d(in_channels=10, out_channels=20, kernel_size=(3, 3), padding=0, bias=False),
+
+
+        #     nn.ReLU()
+        # ) # output_size = 22
+
+        # TRANSITION BLOCK 1
+        self.convblock3 = nn.Sequential(
+            nn.Conv2d(in_channels=12, out_channels=8, kernel_size=(1, 1), padding=0, bias=False),
+            nn.BatchNorm2d(8),
+            nn.ReLU()
+        ) # output_size = 22
+        self.pool1 = nn.MaxPool2d(2, 2) # output_size = 11
+
+
+        # CONVOLUTION BLOCK 2
+        self.convblock4 = nn.Sequential(
+            nn.Conv2d(in_channels=8, out_channels=12, kernel_size=(3, 3), padding=0, bias=False),
+            nn.BatchNorm2d(12),
+
+            nn.ReLU()
+        ) # output_size =9
+        self.convblock5 = nn.Sequential(
+            nn.Conv2d(in_channels=12, out_channels=12, kernel_size=(3, 3), padding=0, bias=False),
+            nn.BatchNorm2d(12),
+            nn.ReLU()
+        ) # output_size = 7
+
+        # OUTPUT BLOCK
+        self.convblock6 = nn.Sequential(
+            nn.Conv2d(in_channels=12, out_channels=12, kernel_size=(3, 3), padding=0, bias=False),
+            nn.BatchNorm2d(12),
+            nn.ReLU()
+        ) # output_size = 5
+        self.convblock7 = nn.Sequential(
+            nn.Conv2d(in_channels=12, out_channels=12, kernel_size=(3, 3), padding=0, bias=False),
+            nn.BatchNorm2d(12),
+            # nn.BatchNorm2d(10), NEVER
+            # nn.ReLU() NEVER!
+        ) # output_size = 3
+
+        # OUTPUT BLOCK
+        self.gap = nn.Sequential(
+            nn.AvgPool2d(kernel_size=6)
+        ) # output_size = 1
+
+        self.dropout = nn.Dropout(0.25)
+
+    def forward(self, x):
+        x = self.convblock1(x)
+        x = self.convblock2(x)
+        x = self.convblock3(x)
+        x = self.dropout(x)
+        x = self.pool1(x)
+        x = self.convblock4(x)
+        x = self.convblock5(x)
+        x = self.convblock6(x)
+        x = self.dropout(x)
+        x = self.convblock7(x)
+        #x = self.convblock8(x)
+        batch_size = x.shape[0]
+        x = x.view(batch_size, -1)  # This will automatically handle the dimensions correctly 
+        return F.log_softmax(x, dim=-1)
+
+#ADD Average Pooling 
+class Model2c(nn.Module):
+    def __init__(self):
+        super(Model2c, self).__init__()
+
+        # Input Block
+        self.convblock1 = nn.Sequential(
+            nn.Conv2d(in_channels=1, out_channels=8, kernel_size=(3, 3), padding=0, bias=False),
+            nn.BatchNorm2d(8),
+            nn.ReLU()
+        ) # output_size = 26
+
+        # CONVOLUTION BLOCK 1
+        self.convblock2 = nn.Sequential(
+            nn.Conv2d(in_channels=8, out_channels=12, kernel_size=(3, 3), padding=0, bias=False),
+            nn.BatchNorm2d(12),
+            nn.ReLU()
+        ) # output_size = 24
+        # self.convblock3 = nn.Sequential(
+        #     nn.Conv2d(in_channels=10, out_channels=20, kernel_size=(3, 3), padding=0, bias=False),
+
+
+        #     nn.ReLU()
+        # ) # output_size = 22
+
+        # TRANSITION BLOCK 1
+        self.convblock3 = nn.Sequential(
+            nn.Conv2d(in_channels=12, out_channels=8, kernel_size=(1, 1), padding=0, bias=False),
+            nn.BatchNorm2d(8),
+            nn.ReLU()
+        ) # output_size = 22
+        self.pool1 = nn.MaxPool2d(2, 2) # output_size = 11
+
+
+        # CONVOLUTION BLOCK 2
+        self.convblock4 = nn.Sequential(
+            nn.Conv2d(in_channels=8, out_channels=12, kernel_size=(3, 3), padding=0, bias=False),
+            nn.BatchNorm2d(12),
+
+            nn.ReLU()
+        ) # output_size =9
+        self.convblock5 = nn.Sequential(
+            nn.Conv2d(in_channels=12, out_channels=12, kernel_size=(3, 3), padding=0, bias=False),
+            nn.BatchNorm2d(12),
+            nn.ReLU()
+        ) # output_size = 7
+
+        # OUTPUT BLOCK
+        self.convblock6 = nn.Sequential(
+            nn.Conv2d(in_channels=12, out_channels=12, kernel_size=(3, 3), padding=0, bias=False),
+            nn.BatchNorm2d(12),
+            nn.ReLU()
+        ) # output_size = 5
+        self.convblock7 = nn.Sequential(
+            nn.Conv2d(in_channels=12, out_channels=12, kernel_size=(3, 3), padding=0, bias=False),
+            nn.BatchNorm2d(12),
+            # nn.BatchNorm2d(10), NEVER
+            # nn.ReLU() NEVER!
+        ) # output_size = 3
+
+        # OUTPUT BLOCK
+        self.gap = nn.Sequential(
+            nn.AvgPool2d(kernel_size=3)
+        ) # output_size = 1
+        self.dropout = nn.Dropout(0.25)
+
+    def forward(self, x):
+        x = self.convblock1(x)
+        x = self.convblock2(x)
+        x = self.convblock3(x)
+        x = self.dropout(x)
+        x = self.pool1(x)
+        x = self.convblock4(x)
+        x = self.convblock5(x)
+        x = self.convblock6(x)
+        x = self.dropout(x)
+        x = self.convblock7(x)
+        x = self.gap(x)
+
+        batch_size = x.shape[0]
+
+        # Calculate the correct number of features for the view operation
+        #num_features = x.shape[1] * x.shape[2] * x.shape[3] 
+        # x = x.view(batch_size, -1)
+        # batch_size = x.shape[0]
+
+        x = x.view(batch_size, -1)
+        return F.log_softmax(x, dim=-1)
+
+
 dropout_value = 0.1
 class Model3(nn.Module):
     def __init__(self):
@@ -107,7 +422,7 @@ class Model3(nn.Module):
             nn.ReLU(),
             nn.BatchNorm2d(12),
             nn.Dropout(dropout_value)
-        ) # output_size = 8
+        ) # output_size = 12
         self.convblock5 = nn.Sequential(
             nn.Conv2d(in_channels=12, out_channels=12, kernel_size=(3, 3), padding=0, bias=False),
             nn.ReLU(),
@@ -139,7 +454,6 @@ class Model3(nn.Module):
         #     # nn.Dropout(dropout_value)
         # )
 
-
         self.dropout = nn.Dropout(dropout_value)
 
     def forward(self, x):
@@ -156,7 +470,6 @@ class Model3(nn.Module):
 
         x = x.view(-1, 12)
         return F.log_softmax(x, dim=-1)
-
 
     def __init__(self):
         super(Model3, self).__init__()

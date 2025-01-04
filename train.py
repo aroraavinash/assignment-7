@@ -146,7 +146,7 @@ if __name__ == '__main__':
     train_acc = []
     test_acc = []
 
-    EPOCHS = 4
+    EPOCHS = 15
     for epoch in range(EPOCHS):
         print("EPOCH:", epoch)
         train(model, device, train_loader, optimizer, epoch)
