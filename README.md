@@ -72,9 +72,9 @@ The models are trained on the MNIST dataset with:
 - Various optimization techniques
 
 ## Results
-Model1:
+
  
-# Of Parameters: 238,926
+# Model1 Parameters: 238,926
 Accuracy: 99.14% in 15 epochs.
 
 Target:
@@ -88,8 +88,7 @@ Target:
         ◦ Heavy Model , but working. 
         ◦ We see some over-fitting
 
-Model2:
-# Of Parameters: 5784
+# Model2 Parameters: 5784
 Accuracy: 88.67% in 15 epochs.
 
 Target:
@@ -101,8 +100,8 @@ Target:
         ◦  Model has less than 8000 parameters , but low accuracy. 
         ◦  We see slight under-fitting
 
-Model 2:
-# Of Parameters: 5936
+
+# Model 2 Of Parameters: 5936
 
 Target:
 1. Results:
@@ -114,7 +113,7 @@ Analysis:
 	Number of parameters increased slightly but still way under 8000.
 	Accuracy improved, but model is over fitting
 
-Model 2(b):
+# Model 2(b):
 Target:
     1. Added Dropout layer as part of regularization in addition to Batch Normalization.
     2. Results:
@@ -127,7 +126,7 @@ Target:
         3. Overall accuracy not improvement by adding dropout. 
 
 
-Model2(c)
+#Model2(c)
 Target: 
     1. Added GAP layer at the end. 
     2. Results:
@@ -140,7 +139,7 @@ Gap between train and test accuracy reduced;
 Model is slightly overfitting
 
 
-Model 3:
+#Model 3:
 Target:
     1. Added LRPlateau Scheduler for improving accuracy.
     2. Results:
